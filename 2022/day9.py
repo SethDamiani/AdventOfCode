@@ -12,7 +12,7 @@ ddata = [
     "R 2",
 ]
 
-data = [
+ddata = [
     "R 5",
     "U 8",
     "L 8",
@@ -70,28 +70,29 @@ visited.add((0,0))
 knots = []
 for i in range(10):
     knots.append([0, 0])
-print(knots)
 for line in data:
     line = line.strip().split(" ")
     direction = line[0]
     distance = int(line[1])
-    head = knots[0]
-    if direction == "R":
-        head = [head[0]+distance, head[1]]
-    elif direction == "L":
-        head = [head[0]-distance, head[1]]
-    elif direction == "D":
-        head = [head[0], head[1]-distance]
-    elif direction == "U":
-        head = [head[0], head[1]+distance]
-    knots[0] = head
-    for i in range(1, len(knots)):
-        head = knots[i-1]
-        tail = knots[i]
-        while max(diff(head, tail)) > 1:
-            m = move(head, tail)
-            tail = [tail[0]+m[0], tail[1]+m[1]]
-            if i == len(knots)-1:
-                visited.add((tail[0], tail[1]))
-        knots[i] = tail
+    while distance > 0:
+        head = knots[0]
+        if direction == "R":
+            head = [head[0]+1, head[1]]
+        elif direction == "L":
+            head = [head[0]-1, head[1]]
+        elif direction == "D":
+            head = [head[0], head[1]-1]
+        elif direction == "U":
+            head = [head[0], head[1]+1]
+        knots[0] = head
+        for i in range(1, len(knots)):
+            head = knots[i-1]
+            tail = knots[i]
+            while max(diff(head, tail)) > 1:
+                m = move(head, tail)
+                tail = [tail[0]+m[0], tail[1]+m[1]]
+                if i == len(knots)-1:
+                    visited.add((tail[0], tail[1]))
+            knots[i] = tail
+        distance -= 1
 print(len(visited))
