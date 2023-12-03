@@ -75,4 +75,5 @@ p2_list.append("[[6]]")
 p2_sorted = sorted(p2_list, key=cmp_to_key(compare))
 location_of_divider_1 = p2_sorted.index("[[2]]")+1
 location_of_divider_2 = p2_sorted.index("[[6]]")+1
-print(location_of_divider_1 * location_of_divider_2)
+part2 = location_of_divider_1 * location_of_divider_2
+print(part2)
