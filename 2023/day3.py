@@ -32,10 +32,9 @@ class Symbol:
         return f"{self.sym} at row={self.row} col={self.col}"
 
 class EngineSchematic:
-    def __init__(self, filename: str, debug: bool = False) -> None:
+    def __init__(self, filename: str) -> None:
         self.numbers: list[Number] = []
         self.symbols: list[Symbol] = []
-        self.debug = debug
         # read file
         with open(filename) as f:
             text = [l.strip() for l in f.readlines()]
@@ -43,7 +42,7 @@ class EngineSchematic:
         self.total_rows = len(text)
         self.total_cols = len(text[0])
         
-        text = [
+        text1 = [
             "467..114..",
             "...*......",
             "..35..633.",
@@ -82,8 +81,6 @@ class EngineSchematic:
                     self.symbols.append(Symbol(n, m, char))
     
     def search(self, row: int, col: int) -> Optional[Union[Number, Symbol]]:
-        if self.debug:
-            print(f"          searching {row} {col}")
         for symbol in self.symbols:
             if symbol.row == row and symbol.col == col:
                 return symbol
@@ -92,8 +89,6 @@ class EngineSchematic:
                 return number
     
     def get_surrounding(self, item: Union[Number, Symbol]) -> set[Union[Number, Symbol]]:
-        if self.debug:
-            print(f"    finding surrounding of {item}")
         surrounding_items = set()
         start_search_col = 0
         end_search_col = self.total_cols
@@ -118,10 +113,6 @@ class EngineSchematic:
                     surrounding_items.add(found)
         if item in surrounding_items:
             surrounding_items.remove(item)
-        if self.debug:
-            print(f"      found {len(surrounding_items)} surrounding items")
-            for i in surrounding_items:
-                print(f"        {i}")
         return surrounding_items
     
     def part1(self) -> int:
@@ -138,15 +129,12 @@ class EngineSchematic:
             if symbol.sym != "*":
                 continue
             surrounding_numbers = [item for item in self.get_surrounding(symbol) if type(item) == Number]
-            print(symbol)
-            for s in surrounding_numbers:
-                print(f"  {s}")
             if len(surrounding_numbers) == 2:
                 total += surrounding_numbers[0].num * surrounding_numbers[1].num
         return total
 
 
 if __name__ == "__main__":
-    es = EngineSchematic("2023/day3.txt", False)
+    es = EngineSchematic("2023/day3.txt")
     print(es.part1())
     print(es.part2())
