@@ -88,7 +88,7 @@ class EngineSchematic:
             if symbol.row == row and symbol.col == col:
                 return symbol
         for number in self.numbers:
-            if number.row == row and number.start_col() <= col <= number.end_col():
+            if number.row == row and number.start_col() <= col < number.end_col():
                 return number
     
     def get_surrounding(self, item: Union[Number, Symbol]) -> set[Union[Number, Symbol]]:
@@ -147,6 +147,6 @@ class EngineSchematic:
 
 
 if __name__ == "__main__":
-    es = EngineSchematic("day3.txt", False)
+    es = EngineSchematic("2023/day3.txt", False)
     print(es.part1())
     print(es.part2())
